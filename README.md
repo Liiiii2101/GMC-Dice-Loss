@@ -24,7 +24,7 @@ cen_dir is the directory of the output folder
 ## ⚙️ Installation
 
 ```bash
-cd ./GMC-Dice
+cd ./GMC-Dice-Loss
 pip install -e .
 ```
 ## 🏋️ Training with GMC-Dice Loss
