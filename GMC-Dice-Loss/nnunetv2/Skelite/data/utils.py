@@ -11,6 +11,7 @@ def get_device():
 
 
 def get_config(config):
+    config = str(config) if isinstance(config, Path) else config
     if not config:
         return None
     if config.endswith(".json"):
