@@ -7,16 +7,43 @@ import torch
 from nnunetv2.Skelite.utils.model_utils import build_model, get_model, load_model_checkpoint
 from nnunetv2.Skelite.data.utils import get_config, get_device
 
+# def load_skeleton_model():
+#     config_path = "/home/l.cai/small_bowel/small_bowel_data_code/skeleton-recall/nnunetv2/Skelite/pretrained/skelite_3d/config.yaml"
+#     checkpoint_path = "/home/l.cai/small_bowel/small_bowel_data_code/skeleton-recall/nnunetv2/Skelite/pretrained/skelite_3d/check/model_best.pt"
+#     config = get_config(config_path)
+#     device = get_device()
+#     model_module = get_model(config["net_type"])
+#     model = build_model(model_module, config, device)
+#     model = model.to(device)
+#     model = load_model_checkpoint(model, checkpoint_path, device)
+#     return model.eval()
+from pathlib import Path
+
 def load_skeleton_model():
-    config_path = "/home/l.cai/small_bowel/small_bowel_data_code/skeleton-recall/nnunetv2/Skelite/pretrained/skelite_3d/config.yaml"
-    checkpoint_path = "/home/l.cai/small_bowel/small_bowel_data_code/skeleton-recall/nnunetv2/Skelite/pretrained/skelite_3d/check/model_best.pt"
+    # Get the package root (nnunetv2)
+    package_root = Path(__file__).resolve().parent.parent  # adjust if this file is nested deeper
+
+    # Build paths relative to package root
+    base_dir = package_root / "Skelite" / "pretrained" / "skelite_3d"
+    config_path = base_dir / "config.yaml"
+    checkpoint_path = base_dir / "check" / "model_best.pt"
+
+    # Sanity checks
+    if not config_path.exists():
+        raise FileNotFoundError(f"Config file not found: {config_path}")
+    if not checkpoint_path.exists():
+        raise FileNotFoundError(f"Checkpoint file not found: {checkpoint_path}")
+
+    # Load model
     config = get_config(config_path)
     device = get_device()
     model_module = get_model(config["net_type"])
     model = build_model(model_module, config, device)
     model = model.to(device)
     model = load_model_checkpoint(model, checkpoint_path, device)
+
     return model.eval()
+
 
 # Load once
 skel_model = load_skeleton_model()
